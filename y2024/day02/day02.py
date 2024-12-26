@@ -12,7 +12,7 @@ def process_input() -> str:
     with open("./day02/input.txt", "r") as fp:
         content = fp.readlines()
     
-    content = SAMPLE.splitlines()
+    # content = SAMPLE.splitlines()
     for index, line in enumerate(content):
         levels = line.strip().split()
         levels = [int(i) for i in levels]
@@ -46,8 +46,8 @@ def part01(data) -> None:
         is_safe, _, _ = is_level_safe(levels)
         if is_safe:
             safe += 1
-            continue
-        unsafe += 1
+        else:
+            unsafe += 1
 
     print(f"{safe=}")
     print(f"{unsafe=}")
@@ -58,20 +58,15 @@ def part02(data) -> None:
     unsafe = 0
     safe = 0
     for levels in data:
-        is_safe, idx1, idx2 = is_level_safe(levels)
-        if is_safe:
-            safe += 1
-            continue
-
-        l1 = levels[:idx1] + levels[idx1+1:]
-        l2 = levels[:idx2] + levels[idx2+1:]
-        is_safe_1, _, _ = is_level_safe(l1)
-        is_safe_2, _, _ = is_level_safe(l2)
-        if is_safe_1 or is_safe_2:
-            safe += 1
-            continue
-        print(f"{levels=}")
-        unsafe += 1
+        is_safe = False
+        for idx in range(len(levels)):
+            check_level = levels[:idx] + levels[idx+1:]
+            is_safe, _, _ = is_level_safe(check_level)
+            if is_safe:
+                safe += 1
+                break
+        if not is_safe:
+            unsafe += 1
     print(f"{safe=}")
     print(f"{unsafe=}")
 

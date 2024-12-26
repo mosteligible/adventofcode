@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func processInput() ([]int, []int) {
+func processInput(dayDir string) ([]int, []int) {
 	leftArr := []int{}
 	rightArr := []int{}
-	lines := utils.ReadLines("./day01/input.txt")
+	lines := utils.ReadLines(dayDir + "/input.txt")
 	for _, line := range lines {
 		splitRes := strings.Split(line, "   ")
 		left, _ := strconv.Atoi(splitRes[0])
@@ -25,16 +25,14 @@ func processInput() ([]int, []int) {
 }
 
 func part01(left []int, right []int) {
-	utils.PartPrinter("PART 01")
 	distance := 0
 	for index, l := range left {
 		distance += utils.IntAbs(l - right[index])
 	}
-	fmt.Printf("total: %d\n", distance)
+	fmt.Printf("Part 01: %d\n", distance)
 }
 
 func part02(left []int, right []int) {
-	utils.PartPrinter("PART 02")
 	similarity := 0
 	counts := utils.Counter(right)
 	for _, l := range left {
@@ -43,12 +41,12 @@ func part02(left []int, right []int) {
 			similarity += l * score
 		}
 	}
-	fmt.Printf("similarity: %d\n", similarity)
+	fmt.Printf("Part 02: %d\n", similarity)
 }
 
-func Run() {
-	fmt.Println("XXXXXXXXXXXXXXX DAY 02 XXXXXXXXXXXXXXX")
-	left, right := processInput()
+func Run(dirPath string) {
+	fmt.Println("XXXXXXXXXXXXXXX DAY 01 XXXXXXXXXXXXXXX")
+	left, right := processInput(dirPath + "/day01")
 	part01(left, right)
 	part02(left, right)
 }

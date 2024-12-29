@@ -1,14 +1,14 @@
 package day05
 
 import (
-	"aoc2024/utils"
+	"adventofcode/y2024/utils"
 	"fmt"
 	"strconv"
 	"strings"
 )
 
-func processInput() (map[string]utils.Number, [][]string) {
-	lines := utils.ReadLines("./day05/input_rules.txt")
+func processInput(dayDir string) (map[string]utils.Number, [][]string) {
+	lines := utils.ReadLines(dayDir + "/input_rules.txt")
 	process := map[string]utils.Number{}
 	for _, line := range lines {
 		nums := strings.Split(line, "|")
@@ -25,7 +25,7 @@ func processInput() (map[string]utils.Number, [][]string) {
 			previous.Next[next.Num] = next
 		}
 	}
-	ordering := utils.ReadLines("./day05/input_ordering.txt")
+	ordering := utils.ReadLines(dayDir + "/input_ordering.txt")
 	orders := [][]string{}
 	for _, order := range ordering {
 		nums := strings.Split(order, ",")
@@ -43,7 +43,7 @@ func isPrevPageSeen(seenPages []string, afterPages map[string]utils.Number) bool
 	return false
 }
 
-func part01(rules map[string]utils.Number, ordering [][]string) [][]string {
+func part01(rules map[string]utils.Number, ordering [][]string) ([][]string, int) {
 	validOrders := [][]string{}
 	invalidOrders := [][]string{}
 
@@ -70,28 +70,24 @@ func part01(rules map[string]utils.Number, ordering [][]string) [][]string {
 		midInt, _ := strconv.Atoi(mid)
 		midSum += midInt
 	}
-	fmt.Println("mid sum=", midSum)
+	fmt.Println("Part 01:", midSum)
 
-	return invalidOrders
+	return invalidOrders, midSum
 }
 
 func part02(rules map[string]utils.Number, ordering [][]string) {
-	invalidOrders := part01(rules, ordering)
-	counter := 0
+	invalidOrders, _ := part01(rules, ordering)
+	invalidSum := 0
 	for _, order := range invalidOrders {
-		fmt.Printf(" [X] %d: invalid index: %v\n", counter, order)
 		sortedOrder := utils.TopologicalSort(order, &rules)
-		fmt.Printf(" [X] sortedOrder: %v\norder: %v\n\n", sortedOrder, order)
-		fmt.Println("-----------------------------------------------------------------")
-		if counter > 3 {
-			break
-		}
-		counter += 1
+		midInt, _ := strconv.Atoi(sortedOrder[len(sortedOrder)/2])
+		invalidSum += midInt
 	}
+	fmt.Println("Part 02:", invalidSum)
 }
 
-func Run() {
+func Run(dir string) {
 	utils.PartPrinter("  DAY 05  ")
-	rules, ordering := processInput()
+	rules, ordering := processInput(dir + "/day05")
 	part02(rules, ordering)
 }

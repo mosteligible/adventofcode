@@ -66,3 +66,13 @@ func PopIndex[T any](arr []T, idx int) (T, []T) {
 	newArr := append(arr[:idx], arr[idx+1:]...)
 	return retT, newArr
 }
+
+func ReverseString(s string) string {
+	strRune := []rune(s)
+	for i, j := 0, len(strRune)-1; i < j; i, j = i+1, j-1 {
+		intermediate := strRune[i]
+		strRune[i] = strRune[j]
+		strRune[j] = intermediate
+	}
+	return string(strRune)
+}

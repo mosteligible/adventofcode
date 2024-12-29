@@ -8,6 +8,10 @@ type Coordinate struct {
 	Value string
 }
 
+func (c *Coordinate) Equals(other Coordinate) bool {
+	return c.Row == other.Row && c.Col == other.Col
+}
+
 func (c *Coordinate) NextCoordinates(
 	maxRow int, maxCol int, grid *Grid[string], obstruction string,
 ) []Coordinate {

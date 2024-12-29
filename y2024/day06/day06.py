@@ -96,6 +96,7 @@ def move(
         # positions[curr_pos[0]][curr_pos[1]] = tick
         # os.system("clear")
         # print_pos(positions)
+
         moved_positions[curr_pos] = True
         next_pos = calculate_next_pos(curr_pos, direction)
         if (
@@ -118,7 +119,7 @@ def move(
 def move_loop(
     positions: list[list[str]], direction: Directions, curr_pos: tuple[int, int]
 ) -> True:
-    moved_positions = {}
+    moved_positions: dict[tuple[int, int, int], Literal[True]] = {}
     rows, columns = len(positions), len(positions[0])
     next_pos = curr_pos
     while True:
@@ -126,62 +127,50 @@ def move_loop(
         # positions[curr_pos[0]][curr_pos[1]] = tick
         # os.system("clear")
         # print_pos(positions)
-        if moved_positions.get(curr_pos, None):
-            moved_positions[curr_pos] += 1
+        mp_key = (*curr_pos, direction.name)
+        if moved_positions.get(mp_key, None):
+            moved_positions[mp_key] += 1
+            return True
         else:
-            moved_positions[curr_pos] = 1
+            moved_positions[mp_key] = 1
         next_pos = calculate_next_pos(curr_pos, direction)
         if (
             next_pos[0] >= rows or next_pos[0] < 0
             or next_pos[1] >= columns or next_pos[1] < 0
         ):
-            # print(f"terminating, last_position: {curr_pos}")
-            # print(f"-- {moved_positions=}")
-            # print(f"-- {check=}")
-            # time.sleep(1.5)
             return False
-        # print(f"before # check")
         if positions[next_pos[0]][next_pos[1]] == "#":
-            # print(f"reorienting: {curr_pos=} | {direction=} -> {next_pos=}", end = " => ")
             direction = reorient(direction)
-            # print(f"{curr_pos=} | {direction=} -> {next_pos=}")
             continue
-        # print(f"after # check")
         curr_pos = next_pos
         check = [v for _, v in moved_positions.items() if v > 3]
-        # print(f"-- {check=}")
-        # print(f"-- {moved_positions=}")
-        if sum(check) > len(moved_positions) * 2:
+        if sum(check) > len(moved_positions) * 5:
             print(f"loop identified, all position traversed at least once!")
-            # time.sleep(0.5)
             return True
-        # time.sleep(0.1)
     return moved_positions
 
 
 def part01(positions) -> dict[tuple[int, int], Literal[True]]:
     pos, direction = get_guard_position_orientation(positions)
     moved_positions = move(positions, direction, pos)
+    print("Part 01:", len(moved_positions))
     # not at start
     return moved_positions
 
 def part02(positions: list[list[str]]):
-    pos, direction = get_guard_position_orientation(positions)
     moved_positions = part01(deepcopy(positions))
-    time.sleep(1)
-    moved_positions.pop(pos)
+    pos, direction = get_guard_position_orientation(positions)
     loop_count = 0
-    counts = 0
-    locations = list(moved_positions.keys())
-    for k, _ in moved_positions.items():
-        positions_copy = deepcopy(positions)
-        positions_copy[k[0]][k[1]] = "#"
-        is_loop = move_loop(positions_copy, direction, pos)
-        # print("move loop?", is_loop)
-        counts += 1
+    pkeys = list(moved_positions.keys())
+    perv_pos_index = 0
+    for _, k in enumerate(pkeys[1:]):
+        positions[k[0]][k[1]] = "#"
+        is_loop = move_loop(positions, direction, pos)
+        positions[k[0]][k[1]] = "."
+        perv_pos_index += 1
         if is_loop:
             loop_count += 1
-            print(f"num loops: {loop_count} - traversed: {counts}")
+            # print(f"{loop_count}", end=" ", flush=True)
 
 
 def main():

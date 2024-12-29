@@ -1,7 +1,7 @@
 package day07
 
 import (
-	"aoc2024/utils"
+	"adventofcode/y2024/utils"
 	"fmt"
 	"strconv"
 	"strings"

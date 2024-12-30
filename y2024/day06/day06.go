@@ -195,6 +195,7 @@ func part02(data *[][]string) {
 }
 
 func Run(dir string) {
+	utils.PartPrinter("DAY 06")
 	data := processInput(dir + "/day06")
 	part02(&data)
 }

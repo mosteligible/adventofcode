@@ -1,7 +1,7 @@
 package day19
 
 import (
-	"aoc2024/utils"
+	"adventofcode/y2024/utils"
 	"fmt"
 	"strings"
 )
@@ -25,17 +25,17 @@ type Input struct {
 	Stripes []string
 }
 
-func (i *Input) ProcessInput() {
-	content := utils.Read("./day19/input.txt")
+func (i *Input) ProcessInput(fpath string) {
+	content := utils.Read(fpath)
 	// content = SAMPLE
 	input := strings.Split(content, "\n\n")
 	i.Stripes = strings.Split(input[0], ", ")
 	i.Puzzles = strings.Split(input[1], "\n")
 }
 
-func NewInput() Input {
+func NewInput(daydir string) Input {
 	i := Input{}
-	i.ProcessInput()
+	i.ProcessInput(daydir + "/input.txt")
 	return i
 }
 
@@ -83,27 +83,25 @@ func Part01(input Input) {
 	numSolvables := 0
 	for _, puzzle := range input.Puzzles {
 		isSolvable := matchStripes(input.Stripes, puzzle)
-		fmt.Printf("pzl: %s, ", puzzle)
 		if isSolvable {
 			numSolvables++
 		}
-		fmt.Printf("solvable: %t\n", isSolvable)
 	}
-	fmt.Println(" [o] Solvables:", numSolvables)
+	fmt.Printf("PART 01: %d\n", numSolvables)
 }
 
 func Part02(input Input) {
-	utils.PartPrinter("Part 02")
 	numWays := 0
 	for _, puzzle := range input.Puzzles {
 		ways := countWays(input.Stripes, puzzle)
 		numWays += ways
 	}
-	fmt.Println(" [o] Ways:", numWays)
+	fmt.Printf("PART 02: %d\n", numWays)
 }
 
-func Run() {
-	input := NewInput()
+func Run(dir string) {
+	utils.PartPrinter("DAY 19")
+	input := NewInput(dir + "/day19")
 	Part01(input)
 	Part02(input)
 }

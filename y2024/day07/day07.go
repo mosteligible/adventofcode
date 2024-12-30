@@ -30,8 +30,8 @@ var SAMPLE = []string{
 	"292: 11 6 16 20",
 }
 
-func processInput() []Input {
-	lines := utils.ReadLines("./day07/input.txt")
+func processInput(dayDir string) []Input {
+	lines := utils.ReadLines(dayDir + "/input.txt")
 	// lines = SAMPLE
 	parsed := []Input{}
 	for _, line := range lines {
@@ -105,7 +105,7 @@ func part01(input []Input) {
 			total += d.target
 		}
 	}
-	fmt.Printf("xx PART 01 total: %d\n", total)
+	fmt.Printf("PART 01: %d\n", total)
 }
 
 func part02(input []Input) {
@@ -115,11 +115,12 @@ func part02(input []Input) {
 			total += d.target
 		}
 	}
-	fmt.Printf("XX PART 02 total: %d\n", total)
+	fmt.Printf("PART 02: %d\n", total)
 }
 
-func Run() {
-	data := processInput()
+func Run(dir string) {
+	utils.PartPrinter("DAY 07")
+	data := processInput(dir + "/day07")
 	part01(data)
 	part02(data)
 }

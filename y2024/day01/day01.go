@@ -45,7 +45,7 @@ func part02(left []int, right []int) {
 }
 
 func Run(dirPath string) {
-	fmt.Println("XXXXXXXXXXXXXXX DAY 01 XXXXXXXXXXXXXXX")
+	utils.PartPrinter("DAY 01")
 	left, right := processInput(dirPath + "/day01")
 	part01(left, right)
 	part02(left, right)

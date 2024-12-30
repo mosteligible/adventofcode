@@ -1,11 +1,40 @@
 package utils
 
-import "math"
+import (
+	"math"
+)
 
 type Coordinate struct {
 	Row   int
 	Col   int
 	Value string
+}
+
+func (c *Coordinate) Subtract(other Coordinate) Coordinate {
+	return Coordinate{
+		Row: c.Row - other.Row,
+		Col: c.Col - other.Col,
+	}
+}
+
+func (c *Coordinate) Add(other Coordinate) Coordinate {
+	return Coordinate{
+		Row: c.Row + other.Row,
+		Col: c.Col + other.Col,
+	}
+}
+
+func (c *Coordinate) Distance(other Coordinate) float32 {
+	return float32(math.Sqrt(
+		math.Pow((float64(c.Row-other.Row)), 2) + math.Pow(float64(c.Col-other.Col), 2),
+	))
+}
+
+func (c *Coordinate) Multiply(n int) Coordinate {
+	return Coordinate{
+		Row: c.Row * n,
+		Col: c.Col * n,
+	}
 }
 
 func (c *Coordinate) Equals(other Coordinate) bool {

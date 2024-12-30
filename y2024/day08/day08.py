@@ -37,11 +37,9 @@ def process_input():
 
 def get_antenna_coordinates(positions: list[list[str]]) -> dict[str, tuple[int, int]]:
     coordinates: dict[str, list] = {}
-    antenna_count = 0
     for row_num, row in enumerate(positions):
         for col_num, col in enumerate(row):
             if col != ".":
-                antenna_count += 1
                 antenna = coordinates.get(col, "")
                 if antenna:
                     coordinates[col].append((row_num, col_num))
@@ -98,7 +96,9 @@ def part01(data: list[list[str]]):
     for _, v in antenna_coordinates.items():
         antenna_pos.update(*v)
     for antenna, coordinates in antenna_coordinates.items():
-        calculate_antinode_pos(coordinates, num_cols=num_cols, num_rows=num_rows, antenna_pos=antenna_pos)
+        calculate_antinode_pos(
+            coordinates, num_cols=num_cols, num_rows=num_rows, antenna_pos=antenna_pos
+        )
     ## uncomment below to print final grid status
     # POS = ["".join(i) for i in POS]
     # pprint({POS})

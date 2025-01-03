@@ -28,7 +28,7 @@ POSITIONS = """....#.....
 def process_input():
     with open("./day06/input.txt", "r") as fp:
         content = fp.readlines()
-    # content = POSITIONS.splitlines()
+    content = POSITIONS.splitlines()
     content = [list(line) for line in content]
     # pprint(content)
     return content
@@ -103,16 +103,12 @@ def move(
             next_pos[0] >= rows or next_pos[0] < 0
             or next_pos[1] >= columns or next_pos[1] < 0
         ):
-            # print(f"terminating, last_position: {curr_pos}")
             break
         if positions[next_pos[0]][next_pos[1]] == "#":
-            # print(f"reorienting: {curr_pos=} | {direction=} -> {next_pos=}", end = " => ")
             direction = reorient(direction)
-            # print(f"{curr_pos=} | {direction=} -> {next_pos=}")
             continue
         curr_pos = next_pos
-        # print(curr_pos)
-        # time.sleep(0.07)
+        # time.sleep(0.25)
     return moved_positions
 
 
@@ -170,7 +166,6 @@ def part02(positions: list[list[str]]):
         perv_pos_index += 1
         if is_loop:
             loop_count += 1
-            # print(f"{loop_count}", end=" ", flush=True)
 
 
 def main():

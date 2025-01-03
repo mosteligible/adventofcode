@@ -48,7 +48,7 @@ def part01(data: list[int]):
             moved.append(dotted[right])
             right = get_right_index(dotted_list=dotted, right_index=right)
         left += 1
-    print(f"checksum: {sum([i*n for i, n in enumerate(moved)])}")
+    print(f"PART 01: {sum([i*n for i, n in enumerate(moved)])}")
 
 
 def get_dotted(data):

@@ -1,16 +1,16 @@
 package day11
 
 import (
+	"adventofcode/y2024/utils"
 	"fmt"
 	"math"
 	"strconv"
 	"strings"
 )
 
-var input = "17639 47 3858 0 470624 9467423 5 188"
-
-func processInput() map[int]int {
-	content := input
+func processInput(daydir string) map[int]int {
+	content := utils.Read(daydir + "/input.txt")
+	content = strings.TrimPrefix(content, "\n")
 	splitContent := strings.Split(content, " ")
 	retval := map[int]int{}
 	for _, numbah := range splitContent {
@@ -80,8 +80,8 @@ func part01(rocks map[int]int, numBlinks int) {
 	fmt.Printf("numrocks: %d\n", CountRocks(&rocks))
 }
 
-func Run() {
-	data := processInput()
+func Run(dir string) {
+	data := processInput(dir + "/day11")
 	fmt.Println(data)
 	part01(data, 25)
 	part01(data, 75)

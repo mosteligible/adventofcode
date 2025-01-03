@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 )
 
 func ReadLines(filepath string) []string {
@@ -75,4 +76,58 @@ func ReverseString(s string) string {
 		strRune[j] = intermediate
 	}
 	return string(strRune)
+}
+
+func GetIndex[T comparable](arr *[]T, element T) int {
+	for idx, val := range *arr {
+		if val == element {
+			return idx
+		}
+	}
+	return -1
+}
+
+func Count[T comparable](arr []T, element T) int {
+	occurence := 0
+
+	for _, item := range arr {
+		if item == element {
+			occurence++
+		}
+	}
+
+	return occurence
+}
+
+func Replace[T any](arr *[]T, start int, end int, val T) {
+	for ; start <= end; start++ {
+		(*arr)[start] = val
+	}
+}
+
+func ClearScreen() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
+
+func GetZero[T any]() T {
+	var retval T
+	return retval
+}
+
+func Sum(arr []int) int {
+	total := 0
+	for _, val := range arr {
+		total += val
+	}
+	return total
+}
+
+func MakeMap[T comparable](arr []T) map[T]bool {
+	retval := map[T]bool{}
+	for _, val := range arr {
+		retval[val] = true
+	}
+	return retval
 }

@@ -1,7 +1,6 @@
 import sys
 from pprint import pprint
 
-sys.setrecursionlimit(1000000)
 
 """
 8 9 0 1 0 1 2 3
@@ -43,37 +42,6 @@ SAMPLE = """89010123
 # """
 
 
-class Node:
-    def __init__(self, curr: tuple[str, str]):
-        self.current = curr
-        self.left: "Node" = None
-        self.right: "Node" = None
-        self.up: "Node" = None
-        self.down: "Node" = None
-
-    def add_next(self, next: "Node") -> None:
-        if self.next is None:
-            self.next = set()
-        self.next.add(next)
-
-    def __eq__(self, value: "Node") -> bool:
-        return self.current == value.current
-
-    def __hash__(self):
-        return hash(self.current)
-
-    def __str__(self) -> str:
-        return f"""
-            {self.up}
-              ^
-              |
-{self.left} <- {self.current} -> {self.right}
-              |
-              v
-            {self.down}
-"""
-
-
 ORIG_DEST_TRACKER: dict[tuple[int, int], list[tuple[int, int]]] = {}
 
 
@@ -91,7 +59,6 @@ def trailheads(
     trail_tracker: list, origin: tuple[int, int], start: bool,
 ) -> int:
     curr_no = data[row][col]
-    curr_node = Node(curr=(row, col))
     num_right, num_left, num_down, num_up = 0, 0, 0, 0
 
     if not start:
@@ -103,7 +70,7 @@ def trailheads(
                 return 0
             # ORIG_DEST_TRACKER[origin].append((row, col))
             trail_tracker.append((row, col))
-            print(f"{curr_no=}, {row=}, {col=}, num_solve={1}")
+            # print(f"{curr_no=}, {row=}, {col=}, num_solve={1}")
             return 1
     else:
         start = False
@@ -198,10 +165,10 @@ def part01(data):
                 trail_tracker=trail_coordinate_tracker,
                 origin=origin, start=True
             )
-            print(f"0 at ({row_num}, {col_num}) has {n_trail} trails")
+            # print(f"0 at ({row_num}, {col_num}) has {n_trail} trails")
             num_trails += n_trail
     print(f"num_trailheads: {num_trails}")
-    print()
+    # print()
     # print(trail_coordinate_tracker)
 
     # for row_num, row in enumerate(data):
@@ -223,4 +190,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

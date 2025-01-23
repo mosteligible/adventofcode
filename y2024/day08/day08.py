@@ -44,7 +44,9 @@ def get_antenna_coordinates(positions: list[list[str]]) -> dict[str, tuple[int, 
                 if antenna:
                     coordinates[col].append((row_num, col_num))
                 else:
-                    coordinates[col] = [(row_num, col_num),]
+                    coordinates[col] = [
+                        (row_num, col_num),
+                    ]
     return coordinates
 
 
@@ -61,26 +63,37 @@ def coordinates_add(c1: tuple[int, int], c2: tuple[int, int]) -> tuple[int, int]
 
 
 def distance(c1: tuple[int, int], c2: tuple[int, int]) -> float:
-    dist = ((c1[0]-c2[0])**2 + (c1[1]-c2[1])**2)**0.5
+    dist = ((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2) ** 0.5
     return round(dist, 2)
 
 
-def calculate_antinode_pos(coordinates: list[tuple[int, int]], num_rows: int, num_cols: int, antenna_pos: list) -> int:
+def calculate_antinode_pos(
+    coordinates: list[tuple[int, int]], num_rows: int, num_cols: int, antenna_pos: list
+) -> int:
     global POS
     for index, c0 in enumerate(coordinates):
-        for c1 in coordinates[index + 1:]:
+        for c1 in coordinates[index + 1 :]:
             delta = coordinates_difference(c0, c1)
             potential_antinode_0 = coordinates_add(c0, delta)
-            potential_antinode_1 = coordinates_difference(c0, (2*delta[0], 2*delta[1]))
-            if (potential_antinode_1[0] >= 0 and potential_antinode_1[0] < num_rows
-                and potential_antinode_1[1] >= 0 and potential_antinode_1[1] < num_cols
-                and potential_antinode_1 not in antenna_pos):
+            potential_antinode_1 = coordinates_difference(
+                c0, (2 * delta[0], 2 * delta[1])
+            )
+            if (
+                potential_antinode_1[0] >= 0
+                and potential_antinode_1[0] < num_rows
+                and potential_antinode_1[1] >= 0
+                and potential_antinode_1[1] < num_cols
+                and potential_antinode_1 not in antenna_pos
+            ):
                 POS[potential_antinode_1[0]][potential_antinode_1[1]] = "#"
                 ANTINODE_POS.add(potential_antinode_1)
-            if (potential_antinode_0[0] >= 0 and potential_antinode_0[0] < num_rows
-                and potential_antinode_0[1] >= 0 and potential_antinode_0[1] < num_cols
+            if (
+                potential_antinode_0[0] >= 0
+                and potential_antinode_0[0] < num_rows
+                and potential_antinode_0[1] >= 0
+                and potential_antinode_0[1] < num_cols
                 and potential_antinode_0 not in antenna_pos
-                ):
+            ):
                 POS[potential_antinode_0[0]][potential_antinode_0[1]] = "#"
                 ANTINODE_POS.add(potential_antinode_0)
 
@@ -110,14 +123,22 @@ def coordinate_out_of_bounds(c: tuple[int, int], row_size: int, col_size: int) -
         return False
     return True
 
+
 def calculate_linear_coords(
-    c0: tuple[int, int], delta: tuple[int, int], row_limit: int, col_limit: int, antenna_pos: list, antinode_holder: set
+    c0: tuple[int, int],
+    delta: tuple[int, int],
+    row_limit: int,
+    col_limit: int,
+    antenna_pos: list,
+    antinode_holder: set,
 ) -> int:
     global POS
     multiplier = 1
     num_antinodes = 0
     while True:
-        potential_antinode_0 = coordinates_add(c0, (delta[0] * multiplier, delta[1] * multiplier))
+        potential_antinode_0 = coordinates_add(
+            c0, (delta[0] * multiplier, delta[1] * multiplier)
+        )
         potential_antinode_1 = coordinates_difference(
             c0, (delta[0] * (multiplier + 1), delta[1] * (multiplier + 1))
         )
@@ -137,16 +158,25 @@ def calculate_linear_coords(
 
 
 def pt02_calculate_antinode_pos(
-    coordinates: list[tuple[int, int]], num_rows: int, num_cols: int, antenna_pos: list, antinode_holder: set
+    coordinates: list[tuple[int, int]],
+    num_rows: int,
+    num_cols: int,
+    antenna_pos: list,
+    antinode_holder: set,
 ) -> int:
     num_antinodes = 0
     for index, c0 in enumerate(coordinates):
-        for c1 in coordinates[index+1:]:
+        for c1 in coordinates[index + 1 :]:
             antinode_holder.add(c0)
             antinode_holder.add(c1)
             delta = coordinates_difference(c0, c1)
             num_antinodes += calculate_linear_coords(
-                c0, delta=delta, row_limit=num_rows, col_limit=num_cols, antenna_pos=antenna_pos, antinode_holder=antinode_holder
+                c0,
+                delta=delta,
+                row_limit=num_rows,
+                col_limit=num_cols,
+                antenna_pos=antenna_pos,
+                antinode_holder=antinode_holder,
             )
     return num_antinodes
 
@@ -164,7 +194,11 @@ def part02(data):
         antenna_pos.update(*v)
     for _, coordinates in antenna_coordinates.items():
         pt02_calculate_antinode_pos(
-            coordinates, num_cols=num_cols, num_rows=num_rows, antenna_pos=antenna_pos, antinode_holder=antinode_pos
+            coordinates,
+            num_cols=num_cols,
+            num_rows=num_rows,
+            antenna_pos=antenna_pos,
+            antinode_holder=antinode_pos,
         )
     ## uncomment below to print final grid status
     # POS = ["".join(i) for i in POS]

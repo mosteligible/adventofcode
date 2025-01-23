@@ -1,7 +1,7 @@
 import os
 import time
 from copy import deepcopy
-from enum import auto, Enum
+from enum import Enum, auto
 from pprint import pprint
 from typing import Literal
 
@@ -34,7 +34,9 @@ def process_input():
     return content
 
 
-def get_guard_position_orientation(positions: list[list[str]]) -> tuple[tuple[int, int], Directions]:
+def get_guard_position_orientation(
+    positions: list[list[str]],
+) -> tuple[tuple[int, int], Directions]:
     for index, row in enumerate(positions):
         try:
             col = row.index("^")
@@ -44,9 +46,11 @@ def get_guard_position_orientation(positions: list[list[str]]) -> tuple[tuple[in
     raise ValueError("Guard not found!")
 
 
-def calculate_next_pos(curr_pos: tuple[int, int], direction: Directions) -> tuple[int, int]:
+def calculate_next_pos(
+    curr_pos: tuple[int, int], direction: Directions
+) -> tuple[int, int]:
     if direction == Directions.east:
-            next_pos = curr_pos[0], curr_pos[1] + 1
+        next_pos = curr_pos[0], curr_pos[1] + 1
     elif direction == Directions.west:
         next_pos = curr_pos[0], curr_pos[1] - 1
     elif direction == Directions.north:
@@ -86,7 +90,9 @@ def print_pos(positions: list[list[str]]) -> None:
 
 
 def move(
-    positions: list[list[str]], direction: Directions, curr_pos: tuple[int, int],
+    positions: list[list[str]],
+    direction: Directions,
+    curr_pos: tuple[int, int],
 ) -> dict[tuple[int, int], Literal[True]]:
     moved_positions = {}
     rows, columns = len(positions), len(positions[0])
@@ -100,8 +106,10 @@ def move(
         moved_positions[curr_pos] = True
         next_pos = calculate_next_pos(curr_pos, direction)
         if (
-            next_pos[0] >= rows or next_pos[0] < 0
-            or next_pos[1] >= columns or next_pos[1] < 0
+            next_pos[0] >= rows
+            or next_pos[0] < 0
+            or next_pos[1] >= columns
+            or next_pos[1] < 0
         ):
             break
         if positions[next_pos[0]][next_pos[1]] == "#":
@@ -131,8 +139,10 @@ def move_loop(
             moved_positions[mp_key] = 1
         next_pos = calculate_next_pos(curr_pos, direction)
         if (
-            next_pos[0] >= rows or next_pos[0] < 0
-            or next_pos[1] >= columns or next_pos[1] < 0
+            next_pos[0] >= rows
+            or next_pos[0] < 0
+            or next_pos[1] >= columns
+            or next_pos[1] < 0
         ):
             return False
         if positions[next_pos[0]][next_pos[1]] == "#":
@@ -152,6 +162,7 @@ def part01(positions) -> dict[tuple[int, int], Literal[True]]:
     print("Part 01:", len(moved_positions))
     # not at start
     return moved_positions
+
 
 def part02(positions: list[list[str]]):
     moved_positions = part01(deepcopy(positions))

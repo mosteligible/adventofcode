@@ -1,7 +1,10 @@
 from collections import deque
 
-
 SAMPLE = "2333133121414131402"
+SPACE_ID = -1
+SPACE_NOT_FOUND = -100
+FILE_NOT_FOUND = -2
+MOVED_FILE_ID = -5
 
 
 def process_input() -> str:
@@ -33,9 +36,9 @@ def part01(data: list[int]):
     dotted = []
     for idx, num in enumerate(data):
         if idx % 2 == 0:
-            curr = [idx//2] * num
+            curr = [idx // 2] * num
         else:
-            curr = [-1] * num
+            curr = [SPACE_ID] * num
         dotted.extend(curr)
 
     left = 0
@@ -55,9 +58,9 @@ def get_dotted(data):
     dotted = []
     for idx, num in enumerate(data):
         if idx % 2 == 0:
-            curr = [idx//2] * num
+            curr = [idx // 2] * num
         else:
-            curr = [-1] * num
+            curr = [SPACE_ID] * num
         dotted.extend(curr)
     return dotted
 
@@ -75,8 +78,8 @@ def get_first_occuring_spaces(unfragmented: list[int]):
     try:
         first_space_index = unfragmented.index(-1)
     except ValueError:
-        print(f"-1 not found!")
-        return -100, -100
+        print(f"{SPACE_ID} not found!")
+        return SPACE_NOT_FOUND, SPACE_NOT_FOUND
     num_space = get_occurences(unfragmented, first_space_index)
     return first_space_index, num_space
 
@@ -97,7 +100,7 @@ def get_matching_file_id(unfragmented: list[int], curr_idx: int, num_spaces: int
             idx += occurences
             continue
         idx += 1
-    return -2, -2, -2
+    return FILE_NOT_FOUND, FILE_NOT_FOUND, FILE_NOT_FOUND
 
 
 def part02(data):
@@ -108,13 +111,15 @@ def part02(data):
         # if space index is -100, solution is found
         if space_idx == -100:
             break
-        right_file_id, occurences, index = get_matching_file_id(dotted[::-1], space_idx + num_spaces, num_spaces)
+        right_file_id, occurences, index = get_matching_file_id(
+            dotted[::-1], space_idx + num_spaces, num_spaces
+        )
         if right_file_id == -2:
-            dotted[space_idx:space_idx+num_spaces] = [-2] * num_spaces
+            dotted[space_idx : space_idx + num_spaces] = [FILE_NOT_FOUND] * num_spaces
         else:
             replacer = [right_file_id] * occurences
-            dotted[space_idx:space_idx+occurences] = replacer
-            dotted[index-occurences:index] = [-5] * occurences
+            dotted[space_idx : space_idx + occurences] = replacer
+            dotted[index - occurences : index] = [MOVED_FILE_ID] * occurences
     checksum = 0
     for idx, num in enumerate(dotted):
         if num >= 0:

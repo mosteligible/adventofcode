@@ -1,7 +1,6 @@
 import sys
 from pprint import pprint
 
-
 """
 8 9 0 1 0 1 2 3
 7 8 1 2 1 8 7 4
@@ -55,8 +54,14 @@ def process_input():
 
 
 def trailheads(
-    data: list[list[str]], row: int, col: int, prev_no: str, size: tuple[int, int],
-    trail_tracker: list, origin: tuple[int, int], start: bool,
+    data: list[list[str]],
+    row: int,
+    col: int,
+    prev_no: str,
+    size: tuple[int, int],
+    trail_tracker: list,
+    origin: tuple[int, int],
+    start: bool,
 ) -> int:
     curr_no = data[row][col]
     num_right, num_left, num_down, num_up = 0, 0, 0, 0
@@ -79,9 +84,14 @@ def trailheads(
     # check up
     if row - 1 >= 0:
         num_up = trailheads(
-            data, row=row-1, col=col, prev_no=curr_no,
-            size=size, trail_tracker=trail_tracker,
-            origin=origin, start=start
+            data,
+            row=row - 1,
+            col=col,
+            prev_no=curr_no,
+            size=size,
+            trail_tracker=trail_tracker,
+            origin=origin,
+            start=start,
         )
         # print(f"going up, {row=}, {col=}")
         if num_up > 0:
@@ -92,9 +102,14 @@ def trailheads(
     if row + 1 < size[0]:
         # print(f"going down, {row=}, {col=}")
         num_down = trailheads(
-            data, row=row+1, col=col, prev_no=curr_no,
-            size=size, trail_tracker=trail_tracker,
-            origin=origin, start=start
+            data,
+            row=row + 1,
+            col=col,
+            prev_no=curr_no,
+            size=size,
+            trail_tracker=trail_tracker,
+            origin=origin,
+            start=start,
         )
         if num_down > 0:
             # print(f"{curr_no=}, {row=}, {col=}, {num_down=}")
@@ -103,9 +118,14 @@ def trailheads(
     # check left
     if col - 1 >= 0:
         num_left = trailheads(
-            data, row=row, col=col-1, prev_no=curr_no,
-            size=size, trail_tracker=trail_tracker,
-            origin=origin, start=start
+            data,
+            row=row,
+            col=col - 1,
+            prev_no=curr_no,
+            size=size,
+            trail_tracker=trail_tracker,
+            origin=origin,
+            start=start,
         )
         if num_left > 0:
             # print(f"{curr_no=}, {row=}, {col=}, {num_left=}")
@@ -115,9 +135,14 @@ def trailheads(
     if col + 1 < size[1]:
         # print(f"going right, {row=}, {col=}")
         num_right = trailheads(
-            data, row=row, col=col+1, prev_no=curr_no,
-            size=size, trail_tracker=trail_tracker,
-            origin=origin, start=start
+            data,
+            row=row,
+            col=col + 1,
+            prev_no=curr_no,
+            size=size,
+            trail_tracker=trail_tracker,
+            origin=origin,
+            start=start,
         )
         if num_right > 0:
             trail_tracker.append((row, col))
@@ -127,7 +152,12 @@ def trailheads(
     return num_up + num_down + num_left + num_right
 
 
-def bfs_trailheads(data: list[list[str]], size: tuple[int, int], curr_coord: tuple[int, int], origin: tuple[int, int]) -> int:
+def bfs_trailheads(
+    data: list[list[str]],
+    size: tuple[int, int],
+    curr_coord: tuple[int, int],
+    origin: tuple[int, int],
+) -> int:
     o1, o2 = origin
     c1, c2 = curr_coord
     if data[o1][o2] != "0" and data[c1][c2] == "9":
@@ -161,9 +191,14 @@ def part01(data):
             ORIG_DEST_TRACKER[origin] = []
             trail_coordinate_tracker.append((row_num, col_num))
             n_trail = trailheads(
-                data, row_num, col_num, "0", size=size,
+                data,
+                row_num,
+                col_num,
+                "0",
+                size=size,
                 trail_tracker=trail_coordinate_tracker,
-                origin=origin, start=True
+                origin=origin,
+                start=True,
             )
             # print(f"0 at ({row_num}, {col_num}) has {n_trail} trails")
             num_trails += n_trail

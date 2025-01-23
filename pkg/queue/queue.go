@@ -3,15 +3,19 @@ package queue
 import (
 	"adventofcode/y2024/utils"
 	"fmt"
+	"sync"
 )
 
+type Queue[T any] []T
+
 type Deque[T any] struct {
-	queue []T
-	size  int
+	queue  []T
+	size   int
+	rwlock *sync.RWMutex
 }
 
-func NewQueue[T any]() *Deque[T] {
-	return &(Deque[T]{size: 0, queue: []T{}})
+func NewDeque[T any]() *Deque[T] {
+	return &(Deque[T]{size: 0, queue: []T{}, rwlock: &sync.RWMutex{}})
 }
 
 func (q Deque[T]) String() string {
@@ -23,26 +27,36 @@ func (q Deque[T]) String() string {
 }
 
 func (q *Deque[T]) Size() int {
+	q.rwlock.RLock()
+	defer q.rwlock.RUnlock()
 	return q.size
 }
 
 func (q *Deque[T]) Append(item T) {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
 	q.queue = append(q.queue, item)
 	q.size += 1
 }
 
 func (q *Deque[T]) Extend(items []T) {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
 	q.queue = append(q.queue, items...)
 	q.size += len(items)
 }
 
 func (q *Deque[T]) AppendLeft(item T) {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
 	q.queue = append([]T{item}, q.queue...)
 	q.size += 1
 }
 
 func (q *Deque[T]) PopLeft() (T, error) {
-	if q.size == 0 {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
+	if q.size <= 0 {
 		return utils.GetZero[T](), fmt.Errorf("no items in deque")
 	}
 	retval := q.queue[0]
@@ -56,7 +70,9 @@ func (q *Deque[T]) PopLeft() (T, error) {
 }
 
 func (q *Deque[T]) Pop() (T, error) {
-	if q.size == 0 {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
+	if q.size <= 0 {
 		return utils.GetZero[T](), fmt.Errorf("no items in deque")
 	}
 	retval := q.queue[q.size-1]
@@ -66,6 +82,8 @@ func (q *Deque[T]) Pop() (T, error) {
 }
 
 func (q *Deque[T]) PopN(n int) ([]T, error) {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
 	if n <= 0 {
 		return nil, fmt.Errorf("n has to be positive number, got %d", n)
 	}
@@ -82,6 +100,8 @@ func (q *Deque[T]) PopN(n int) ([]T, error) {
 }
 
 func (q *Deque[T]) PopNLeft(n int) ([]T, error) {
+	q.rwlock.Lock()
+	defer q.rwlock.Unlock()
 	if n <= 0 {
 		return nil, fmt.Errorf("n has to be positive number, got %d", n)
 	}
@@ -94,4 +114,17 @@ func (q *Deque[T]) PopNLeft(n int) ([]T, error) {
 	retval := q.queue[:n]
 	q.queue = q.queue[n:]
 	return retval, nil
+}
+
+func (q *Deque[T]) GetN(index, num int) []T {
+	retval := []T{}
+	right := index + num
+	if right >= q.Size() {
+		right = q.Size()
+	}
+	for ; index < right; index++ {
+		retval = append(retval, q.queue[index])
+	}
+
+	return retval
 }

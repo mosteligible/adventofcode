@@ -1,6 +1,5 @@
 from typing import List
 
-
 SAMPLE = """7 6 4 2 1
 1 2 7 8 9
 9 7 6 2 1
@@ -8,10 +7,11 @@ SAMPLE = """7 6 4 2 1
 8 6 4 4 1
 1 3 6 7 9"""
 
+
 def process_input() -> str:
     with open("./day02/input.txt", "r") as fp:
         content = fp.readlines()
-    
+
     # content = SAMPLE.splitlines()
     for index, line in enumerate(content):
         levels = line.strip().split()
@@ -32,7 +32,9 @@ def is_level_safe(levels: List[int]) -> bool:
             return False, index, index + 1
         if (decreasing and levels[index] < l) or (not decreasing and levels[index] > l):
             return False, index, index + 1
-        if (decreasing and (levels[index] - l > 3)) or (not decreasing and (l - levels[index] > 3)):
+        if (decreasing and (levels[index] - l > 3)) or (
+            not decreasing and (l - levels[index] > 3)
+        ):
             return False, index, index + 1
         index += 1
     return True, -1, -1
@@ -60,7 +62,7 @@ def part02(data) -> None:
     for levels in data:
         is_safe = False
         for idx in range(len(levels)):
-            check_level = levels[:idx] + levels[idx+1:]
+            check_level = levels[:idx] + levels[idx + 1 :]
             is_safe, _, _ = is_level_safe(check_level)
             if is_safe:
                 safe += 1

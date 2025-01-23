@@ -44,7 +44,7 @@ def part01(rules: dict[str, dict[str, bool]], orders):
 
     mid_sum = 0
     for order in valid_orders:
-        mid = order[len(order)//2]
+        mid = order[len(order) // 2]
         mid_sum += int(mid)
     print(f"{mid_sum=}")
     return invalid_orders
@@ -70,7 +70,7 @@ def part02(rules, order):
     # print(f"{reordered=}")
     mid_sum = 0
     for items in reordered:
-        mid = items[len(items)//2]
+        mid = items[len(items) // 2]
         mid_sum += int(mid)
     print(f"{mid_sum=}")
 
@@ -112,4 +112,3 @@ ORDERS = """75,47,61,53,29
 
 if __name__ == "__main__":
     main()
-

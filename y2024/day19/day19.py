@@ -1,7 +1,6 @@
 import os
 from typing import Literal
 
-
 SAMPLE = """r, wr, b, g, bwu, rb, gb, br
 
 brwrr
@@ -16,7 +15,7 @@ bbrgwb"""
 
 class Input:
     def __init__(self, filepath: str):
-        self.stripes : dict[str, Literal[True]]
+        self.stripes: dict[str, Literal[True]]
         self.stripe_length: set[int]
         self.longest_stripe: int
         self.puzzle: list[str]
@@ -67,14 +66,16 @@ def part02(data: Input):
 
 
 def main():
-    print("""
+    print(
+        """
 U   U  SSS  EEEE       ggg      ooo
 U   U S     E         g        o   o
 U   U  SSS  EEE      g   gggg  o   o
 u   U     S E         g   g g  o   o
  UUU   SSS  EEEE       ggg  g   ooo
 
-    """)
+    """
+    )
     os._exit(0)
     data = Input("./day19/input.txt")
     part01(data)
@@ -83,4 +84,3 @@ u   U     S E         g   g g  o   o
 
 if __name__ == "__main__":
     main()
-

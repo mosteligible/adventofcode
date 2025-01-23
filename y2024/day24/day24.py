@@ -3,7 +3,6 @@ from collections import deque
 from enum import Enum, auto
 from pprint import pprint
 
-
 SAMPLE_SIGNALS = """x00: 1
 x01: 0
 x02: 1
@@ -53,6 +52,7 @@ tnw OR pbm -> gnj"""
 
 
 SIGNAL_MAP: dict[str, int] = {}
+
 
 class Operator(Enum):
     AND = auto()
@@ -150,7 +150,10 @@ def get_conn_from_result(connections: list[Connection], result: str) -> Connecti
 
 
 def swap_results(
-    connections: list[Connection], sig1: str, sig2: str, res: str,
+    connections: list[Connection],
+    sig1: str,
+    sig2: str,
+    res: str,
 ) -> tuple[Connection, Connection, list[str]]:
     left_match = None
     result_match = None

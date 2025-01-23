@@ -39,35 +39,6 @@ func IntAbs(num int) int {
 	return num
 }
 
-func Counter[T comparable](list []T) map[T]int {
-	counts := map[T]int{}
-	for _, item := range list {
-		_, ok := counts[item]
-		if ok {
-			counts[item] += 1
-		} else {
-			counts[item] = 1
-		}
-	}
-	return counts
-}
-
-func PartPrinter(partstr string) {
-	fmt.Printf("XXXXXXXXXXXXXXXX %s XXXXXXXXXXXXXXXX\n", partstr)
-}
-
-func PopIndex[T any](arr []T, idx int) (T, []T) {
-	if idx >= len(arr) {
-		log.Fatalf("index out of bound!")
-	}
-	retT := arr[idx]
-	if idx == 0 {
-		return retT, arr[idx+1:]
-	}
-	newArr := append(arr[:idx], arr[idx+1:]...)
-	return retT, newArr
-}
-
 func ReverseString(s string) string {
 	strRune := []rune(s)
 	for i, j := 0, len(strRune)-1; i < j; i, j = i+1, j-1 {
@@ -76,33 +47,6 @@ func ReverseString(s string) string {
 		strRune[j] = intermediate
 	}
 	return string(strRune)
-}
-
-func GetIndex[T comparable](arr *[]T, element T) int {
-	for idx, val := range *arr {
-		if val == element {
-			return idx
-		}
-	}
-	return -1
-}
-
-func Count[T comparable](arr []T, element T) int {
-	occurence := 0
-
-	for _, item := range arr {
-		if item == element {
-			occurence++
-		}
-	}
-
-	return occurence
-}
-
-func Replace[T any](arr *[]T, start int, end int, val T) {
-	for ; start <= end; start++ {
-		(*arr)[start] = val
-	}
 }
 
 func ClearScreen() {
@@ -124,10 +68,6 @@ func Sum(arr []int) int {
 	return total
 }
 
-func MakeMap[T comparable](arr []T) map[T]bool {
-	retval := map[T]bool{}
-	for _, val := range arr {
-		retval[val] = true
-	}
-	return retval
+func PartPrinter(partstr string) {
+	fmt.Printf("XXXXXXXXXXXXXXXX %s XXXXXXXXXXXXXXXX\n", partstr)
 }

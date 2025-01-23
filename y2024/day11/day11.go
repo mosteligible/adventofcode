@@ -44,7 +44,7 @@ func CountRocks(rocks *map[int]int) int {
 	return total
 }
 
-func part01(rocks map[int]int, numBlinks int) {
+func part01(rocks map[int]int, numBlinks int, part string) {
 	for range numBlinks {
 		newRocks := map[int]int{}
 		// fmt.Printf(" len(newRocks): %d\n", len(newRocks))
@@ -77,12 +77,12 @@ func part01(rocks map[int]int, numBlinks int) {
 		}
 		rocks = newRocks
 	}
-	fmt.Printf("numrocks: %d\n", CountRocks(&rocks))
+	fmt.Printf("%s: %d\n", part, CountRocks(&rocks))
 }
 
 func Run(dir string) {
+	utils.PartPrinter("DAY 11")
 	data := processInput(dir + "/day11")
-	fmt.Println(data)
-	part01(data, 25)
-	part01(data, 75)
+	part01(data, 25, "PART 01")
+	part01(data, 75, "PART 02")
 }

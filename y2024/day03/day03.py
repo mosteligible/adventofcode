@@ -1,6 +1,5 @@
 import re
 
-
 MUL_PATTERN = r"mul\((\d{1,3},\d{1,3})\)"
 MUL_REGEX = re.compile(MUL_PATTERN)
 
@@ -14,7 +13,7 @@ def process_input01():
     for index, line in enumerate(content):
         line_nums: list[str] = MUL_REGEX.findall(line)
         for i, nums in enumerate(line_nums):
-            n1,n2 = nums.split(",")
+            n1, n2 = nums.split(",")
             line_nums[i] = (int(n1), int(n2))
         content[index] = line_nums
     return content

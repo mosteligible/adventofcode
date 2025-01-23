@@ -1,6 +1,7 @@
 package day04
 
 import (
+	"adventofcode/pkg/graph"
 	"adventofcode/y2024/utils"
 	"fmt"
 )
@@ -18,7 +19,7 @@ func processInput(daydir string) [][]string {
 	return grid
 }
 
-func getWords(characters *[][]string, origin utils.Coordinate, rLimit int, cLimit int) [8]string {
+func getWords(characters *[][]string, origin graph.Coordinate, rLimit int, cLimit int) [8]string {
 	wordLeft, wordRight, wordUp, wordDown, leftUp, leftDown, rightUp, rightDown := "", "", "", "", "", "", "", ""
 
 	// check up
@@ -74,7 +75,7 @@ func getWords(characters *[][]string, origin utils.Coordinate, rLimit int, cLimi
 	}
 }
 
-func isXmas(grid *[][]string, origin utils.Coordinate) bool {
+func isXmas(grid *[][]string, origin graph.Coordinate) bool {
 	leftTopRightDown := (*grid)[origin.Row-1][origin.Col-1] + (*grid)[origin.Row][origin.Col] + (*grid)[origin.Row+1][origin.Col+1]
 	rightTopLeftDown := (*grid)[origin.Row-1][origin.Col+1] + (*grid)[origin.Row][origin.Col] + (*grid)[origin.Row+1][origin.Col-1]
 
@@ -95,7 +96,7 @@ func part01(grid *[][]string) {
 			if (*grid)[row][col] != "X" {
 				continue
 			}
-			origin := utils.Coordinate{Row: row, Col: col}
+			origin := graph.Coordinate{Row: row, Col: col}
 			words := getWords(grid, origin, rows, columns)
 			for _, w := range words {
 				if w == "XMAS" {
@@ -116,7 +117,7 @@ func part02(grid *[][]string) {
 			if (*grid)[row][col] != "A" {
 				continue
 			}
-			if isXmas(grid, utils.Coordinate{Row: row, Col: col}) {
+			if isXmas(grid, graph.Coordinate{Row: row, Col: col}) {
 				found++
 			}
 		}

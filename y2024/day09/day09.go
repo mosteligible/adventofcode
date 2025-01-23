@@ -151,12 +151,6 @@ func getMatchingFileId(files *[]int, spaceIndex int, numSpaces int) (int, int, i
 	return FILE_NOT_FOUND, FILE_NOT_FOUND, FILE_NOT_FOUND
 }
 
-func replace(arr *[]int, startIndex, endIndex, replacementVal int) {
-	for ; startIndex <= endIndex; startIndex++ {
-		(*arr)[startIndex] = replacementVal
-	}
-}
-
 func part02(data *[]int) {
 	unfragmented := interpretInput(*data)
 	// []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
@@ -169,13 +163,15 @@ func part02(data *[]int) {
 		// if space is found, check if files exist to fill that contiguous space
 		fileId, numFiles, fileidStartIndex := getMatchingFileId(unfragmented, spaceIndex, numSpaces)
 		if fileId == FILE_NOT_FOUND {
-			replace(unfragmented, spaceIndex, spaceIndex+numSpaces-1, FILE_NOT_FOUND)
+			utils.Replace(unfragmented, spaceIndex, numSpaces, FILE_NOT_FOUND)
 		} else {
-			replace(unfragmented, spaceIndex, spaceIndex+numFiles-1, fileId)
-			replace(unfragmented, fileidStartIndex, fileidStartIndex+numFiles-1, MOVED_FILE_ID)
+			utils.Replace(unfragmented, spaceIndex, numFiles, fileId)
+			utils.Replace(
+				unfragmented, fileidStartIndex, fileidStartIndex+numFiles-1, MOVED_FILE_ID,
+			)
 		}
 	}
-	fmt.Println("PART 02:", checksum(unfragmented))
+	fmt.Println("PART 02:", checksum(unfragmented), len(*unfragmented))
 }
 
 func Run(dir string) {

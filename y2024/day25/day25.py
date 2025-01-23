@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-
 SAMPLE = """#####
 .####
 .####
@@ -84,10 +83,7 @@ def part01(locks: List[Combination], pins: List[Combination]) -> None:
     total = 0
     for loc in locks:
         for pin in pins:
-            mix = ([
-                loc.combination[i] + pin.combination[i]
-                for i in range(num_cols)
-            ])
+            mix = [loc.combination[i] + pin.combination[i] for i in range(num_cols)]
             if sum([1 for i in mix if i <= TARGET]) == num_cols:
                 total += 1
 

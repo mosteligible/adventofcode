@@ -1,7 +1,7 @@
-import os, traceback
+import os
+import traceback
 from enum import Enum, auto
 from pprint import pprint
-
 
 SAMPLE = """
 AAAA
@@ -9,7 +9,7 @@ BBCD
 BBCC
 EEEC
 """
-SAMPLE="""
+SAMPLE = """
 RRRRIICCFF
 RRRRIICCCF
 VVRRRCCFFF
@@ -30,9 +30,6 @@ class Direction(Enum):
     right = auto()
 
 
-
-
-
 def process_input():
     with open("./day12/input.txt", "r") as fp:
         content = fp.readlines()
@@ -41,28 +38,35 @@ def process_input():
     return content
 
 
-def count_edges(positions: list[list[str]], row: int, col: int, curr_plant: str, rowlim: int, collim: int) -> int:
+def count_edges(
+    positions: list[list[str]],
+    row: int,
+    col: int,
+    curr_plant: str,
+    rowlim: int,
+    collim: int,
+) -> int:
     edges = 0
     # up
     try:
         if row == 0:
             edges += 1
-        elif row - 1 >= 0 and positions[row-1][col] != curr_plant:
+        elif row - 1 >= 0 and positions[row - 1][col] != curr_plant:
             edges += 1
         # down
         if row == rowlim - 1:
             edges += 1
-        elif row + 1 < rowlim and positions[row+1][col] != curr_plant:
+        elif row + 1 < rowlim and positions[row + 1][col] != curr_plant:
             edges += 1
         # right
         if col == collim - 1:
             edges += 1
-        elif col + 1 < collim and positions[row][col+1] != curr_plant:
+        elif col + 1 < collim and positions[row][col + 1] != curr_plant:
             edges += 1
         # left
         if col == 0:
             edges += 1
-        elif col - 1 >= 0 and positions[row][col-1] != curr_plant:
+        elif col - 1 >= 0 and positions[row][col - 1] != curr_plant:
             edges += 1
     except IndexError:
         print(f"index error at: {row=}, {col=}")
@@ -72,9 +76,12 @@ def count_edges(positions: list[list[str]], row: int, col: int, curr_plant: str,
 
 
 def get_edges(
-    positions: list[list[str]], coord: tuple[int, int],
-    edge_tracker: dict[tuple[int, int], int], visited_coords: set,
-    row_lim: int, col_lim: int,
+    positions: list[list[str]],
+    coord: tuple[int, int],
+    edge_tracker: dict[tuple[int, int], int],
+    visited_coords: set,
+    row_lim: int,
+    col_lim: int,
     # plant_nodes: dict[str, list[tuple[int, int]]]
 ) -> tuple[int, int]:
     if coord in visited_coords:
@@ -88,32 +95,50 @@ def get_edges(
         return num_edges, total_area
 
     # can you go up:
-    if coord[0] - 1 >= 0 and positions[coord[0]-1][coord[1]] == curr_plant:
+    if coord[0] - 1 >= 0 and positions[coord[0] - 1][coord[1]] == curr_plant:
         edge, area = get_edges(
-            positions=positions, coord=(coord[0]-1,coord[1]),
-            edge_tracker=edge_tracker, visited_coords=visited_coords,
-            row_lim=row_lim, col_lim=col_lim
+            positions=positions,
+            coord=(coord[0] - 1, coord[1]),
+            edge_tracker=edge_tracker,
+            visited_coords=visited_coords,
+            row_lim=row_lim,
+            col_lim=col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go down:
-    if coord[0] + 1 < row_lim and positions[coord[0]+1][coord[1]] == curr_plant:
+    if coord[0] + 1 < row_lim and positions[coord[0] + 1][coord[1]] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0]+1, coord[1]), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0] + 1, coord[1]),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go left:
-    if coord[1] - 1 >= 0 and positions[coord[0]][coord[1]-1] == curr_plant:
+    if coord[1] - 1 >= 0 and positions[coord[0]][coord[1] - 1] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0], coord[1]-1), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0], coord[1] - 1),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go right:
-    if coord[1] + 1 < col_lim and positions[coord[0]][coord[1]+1] == curr_plant:
+    if coord[1] + 1 < col_lim and positions[coord[0]][coord[1] + 1] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0], coord[1]+1), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0], coord[1] + 1),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
@@ -121,12 +146,16 @@ def get_edges(
     return num_edges, total_area
 
 
-def make_edge_count(positions: list[list[str]], rowlim: int, collim: int) -> dict[tuple[int, int], int]:
+def make_edge_count(
+    positions: list[list[str]], rowlim: int, collim: int
+) -> dict[tuple[int, int], int]:
     edge_map = {}
     for row_num, row in enumerate(positions):
         for col_num, col in enumerate(row):
             coordinate = (row_num, col_num)
-            edge_map[coordinate] = count_edges(positions, row_num, col_num, col, rowlim, collim)
+            edge_map[coordinate] = count_edges(
+                positions, row_num, col_num, col, rowlim, collim
+            )
     return edge_map
 
 
@@ -142,10 +171,12 @@ def part01(data: list[list[str]]):
             if coord in visited_plant_coordinates:
                 continue
             perimeter, area = get_edges(
-                positions=data, coord=coord, edge_tracker=edge_tracker,
+                positions=data,
+                coord=coord,
+                edge_tracker=edge_tracker,
                 visited_coords=visited_plant_coordinates,
                 row_lim=row_lim,
-                col_lim=col_lim
+                col_lim=col_lim,
             )
             price += perimeter * area
             # print(f"{plant=}, {perimeter=}, {area=}")
@@ -154,10 +185,13 @@ def part01(data: list[list[str]]):
 
 
 def get_continuous_edges(
-    positions: list[list[str]], coord: tuple[int, int],
-    edge_tracker: dict[tuple[int, int], int], visited_coords: set,
-    row_lim: int, col_lim: int,
-    positional_coords: set
+    positions: list[list[str]],
+    coord: tuple[int, int],
+    edge_tracker: dict[tuple[int, int], int],
+    visited_coords: set,
+    row_lim: int,
+    col_lim: int,
+    positional_coords: set,
 ) -> tuple[int, int]:
     if coord in visited_coords:
         return 0, 0
@@ -172,32 +206,50 @@ def get_continuous_edges(
         return num_edges, total_area
 
     # can you go up:
-    if coord[0] - 1 >= 0 and positions[coord[0]-1][coord[1]] == curr_plant:
+    if coord[0] - 1 >= 0 and positions[coord[0] - 1][coord[1]] == curr_plant:
         edge, area = get_edges(
-            positions=positions, coord=(coord[0]-1,coord[1]),
-            edge_tracker=edge_tracker, visited_coords=visited_coords,
-            row_lim=row_lim, col_lim=col_lim
+            positions=positions,
+            coord=(coord[0] - 1, coord[1]),
+            edge_tracker=edge_tracker,
+            visited_coords=visited_coords,
+            row_lim=row_lim,
+            col_lim=col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go down:
-    if coord[0] + 1 < row_lim and positions[coord[0]+1][coord[1]] == curr_plant:
+    if coord[0] + 1 < row_lim and positions[coord[0] + 1][coord[1]] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0]+1, coord[1]), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0] + 1, coord[1]),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go left:
-    if coord[1] - 1 >= 0 and positions[coord[0]][coord[1]-1] == curr_plant:
+    if coord[1] - 1 >= 0 and positions[coord[0]][coord[1] - 1] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0], coord[1]-1), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0], coord[1] - 1),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
     # can you go right:
-    if coord[1] + 1 < col_lim and positions[coord[0]][coord[1]+1] == curr_plant:
+    if coord[1] + 1 < col_lim and positions[coord[0]][coord[1] + 1] == curr_plant:
         edge, area = get_edges(
-            positions, (coord[0], coord[1]+1), edge_tracker, visited_coords, row_lim, col_lim
+            positions,
+            (coord[0], coord[1] + 1),
+            edge_tracker,
+            visited_coords,
+            row_lim,
+            col_lim,
         )
         num_edges += edge
         total_area += area
@@ -226,9 +278,9 @@ def part02(data: list[list[str]]):
             )
 
 
-
 def main():
     import time
+
     data = process_input()
     # pprint(data)
     start = time.time()

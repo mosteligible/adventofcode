@@ -87,7 +87,7 @@ func part02(rules map[string]utils.Number, ordering [][]string) {
 }
 
 func Run(dir string) {
-	utils.PartPrinter("  DAY 05  ")
+	utils.PartPrinter("DAY 05")
 	rules, ordering := processInput(dir + "/day05")
 	part02(rules, ordering)
 }

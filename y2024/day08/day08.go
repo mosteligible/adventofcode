@@ -1,6 +1,7 @@
 package day08
 
 import (
+	"adventofcode/pkg/graph"
 	"adventofcode/y2024/utils"
 	"fmt"
 )
@@ -37,14 +38,14 @@ func processInput(dayDir string) *[][]string {
 	return &grid
 }
 
-func getAntennaCoordinates(grid *[][]string) map[string][]utils.Coordinate {
-	coordinates := map[string][]utils.Coordinate{}
+func getAntennaCoordinates(grid *[][]string) map[string][]graph.Coordinate {
+	coordinates := map[string][]graph.Coordinate{}
 	for rowNum, row := range *grid {
 		for colNum, colVal := range row {
-			coord := utils.Coordinate{Row: rowNum, Col: colNum}
+			coord := graph.Coordinate{Row: rowNum, Col: colNum}
 			if colVal != "." {
 				if _, ok := coordinates[colVal]; !ok {
-					coordinates[colVal] = []utils.Coordinate{}
+					coordinates[colVal] = []graph.Coordinate{}
 				}
 				coordinates[colVal] = append(coordinates[colVal], coord)
 			}
@@ -54,10 +55,10 @@ func getAntennaCoordinates(grid *[][]string) map[string][]utils.Coordinate {
 }
 
 func getAntinodePositions(
-	nodeCoordinates []utils.Coordinate,
-	size utils.Coordinate,
-	antennas map[utils.Coordinate]bool,
-	antinodes *map[utils.Coordinate]bool,
+	nodeCoordinates []graph.Coordinate,
+	size graph.Coordinate,
+	antennas map[graph.Coordinate]bool,
+	antinodes *map[graph.Coordinate]bool,
 ) {
 	for coordIndex, c0 := range nodeCoordinates {
 		for _, c1 := range nodeCoordinates[coordIndex+1:] {
@@ -81,13 +82,13 @@ func getAntinodePositions(
 }
 
 func part01(grid [][]string) {
-	size := utils.Coordinate{
+	size := graph.Coordinate{
 		Row: len(grid),
 		Col: len(grid[0]),
 	}
 	antennaCoordinates := getAntennaCoordinates(&grid)
-	antennas := map[utils.Coordinate]bool{}
-	uniqueAntinodes := map[utils.Coordinate]bool{}
+	antennas := map[graph.Coordinate]bool{}
+	uniqueAntinodes := map[graph.Coordinate]bool{}
 	for _, val := range antennaCoordinates {
 		for _, a := range val {
 			antennas[a] = true

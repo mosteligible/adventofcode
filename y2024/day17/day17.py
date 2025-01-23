@@ -5,7 +5,7 @@ REGISTERS = {
 }
 PROG = [0, 1, 5, 4, 3, 0]
 
- 
+
 def process_input():
     with open("./day17/input.txt", "r") as fp:
         content = fp.readlines()
@@ -13,7 +13,7 @@ def process_input():
     registers = {}
     for line in content:
         if line.startswith("Register"):
-            registers[line[reg_index]] = int(line[reg_index+2:].strip())
+            registers[line[reg_index]] = int(line[reg_index + 2 :].strip())
         elif line.startswith("Program"):
             prog = line.replace("Program: ", "")
             prog = [int(i) for i in prog.strip().split(",")]
@@ -44,7 +44,7 @@ def part01(registers: dict[str, int], program: list[int]):
         operand = program[pointer + 1]
         match str(opcode):
             case "0":
-                registers["A"] = registers["A"]//2**get_operand(operand, registers)
+                registers["A"] = registers["A"] // 2 ** get_operand(operand, registers)
             case "1":
                 registers["B"] = registers["B"] ^ opcode
             case "2":
@@ -61,9 +61,9 @@ def part01(registers: dict[str, int], program: list[int]):
                 val = get_operand(operand, registers) % 8
                 print(f"output: {val=} | {registers=}")
             case "6":
-                registers["B"] = registers["A"]//2**get_operand(operand, registers)
+                registers["B"] = registers["A"] // 2 ** get_operand(operand, registers)
             case "7":
-                registers["C"] = registers["A"]//2**get_operand(operand, registers)
+                registers["C"] = registers["A"] // 2 ** get_operand(operand, registers)
         print(f"-- {opcode=}, {operand=}, {registers=}")
         pointer += 2
     print()
@@ -82,4 +82,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

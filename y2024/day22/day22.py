@@ -1,6 +1,5 @@
 from collections import deque
 
-
 REQUIRED_SEQ_LENGTH = 4
 SAMPLE = """1
 10
@@ -48,7 +47,12 @@ def nth_evolve_max(secret: int, n: int = 2000) -> int:
     prev = 0
     max_diff = -float("inf")
     temp_hold_diff = deque(maxlen=4)
-    temp_hold_prices = deque([secret,], maxlen=4)
+    temp_hold_prices = deque(
+        [
+            secret,
+        ],
+        maxlen=4,
+    )
     final_four_seq_diff = []
     final_four_seq_prices = []
     max_price = -1

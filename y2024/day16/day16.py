@@ -1,7 +1,6 @@
-from pprint import pprint
 from enum import Enum
 from heapq import heapify, heappop, heappush
-
+from pprint import pprint
 
 SAMPLE = """###############
 #.......#....E#
@@ -36,6 +35,7 @@ SAMPLE = """###############
 # #S#.............#
 # #################"""
 
+
 class Direction(Enum):
     north = 0
     east = 1
@@ -45,26 +45,38 @@ class Direction(Enum):
 
 
 class Coordinate:
-    def __init__(self, row: int, col: int, value: str, direction: Direction = Direction.not_set):
+    def __init__(
+        self, row: int, col: int, value: str, direction: Direction = Direction.not_set
+    ):
         self.row = row
         self.col = col
         self.value = value
         self.direction = direction
 
-    def next_nodes(self, r_limit: int, c_limit: int, grid: list[list[str]]) -> list["Coordinate"]:
+    def next_nodes(
+        self, r_limit: int, c_limit: int, grid: list[list[str]]
+    ) -> list["Coordinate"]:
         retval = []
         # north
         if self.row - 1 >= 0:
-            retval.append(Coordinate(self.row - 1, self.col, grid[self.row - 1][self.col]))
+            retval.append(
+                Coordinate(self.row - 1, self.col, grid[self.row - 1][self.col])
+            )
         # south
         if self.row + 1 < r_limit:
-            retval.append(Coordinate(self.row + 1, self.col, grid[self.row + 1][self.col]))
+            retval.append(
+                Coordinate(self.row + 1, self.col, grid[self.row + 1][self.col])
+            )
         # west
         if self.col - 1 >= 0:
-            retval.append(Coordinate(self.row, self.col - 1, grid[self.row][self.col - 1]))
+            retval.append(
+                Coordinate(self.row, self.col - 1, grid[self.row][self.col - 1])
+            )
         # east
         if self.col + 1 < c_limit:
-            retval.append(Coordinate(self.row, self.col + 1, grid[self.row][self.col + 1]))
+            retval.append(
+                Coordinate(self.row, self.col + 1, grid[self.row][self.col + 1])
+            )
         return retval
 
     def get_score_to_neighbor(self, neighbor: "Coordinate") -> tuple[int, Direction]:
@@ -86,7 +98,9 @@ class Coordinate:
             return 1000 + 1, self_to_neighbor
 
     def __repr__(self) -> str:
-        return f"(row:{self.row}, col:{self.col}, value:{self.value}, dir:{self.direction})"
+        return (
+            f"(row:{self.row}, col:{self.col}, value:{self.value}, dir:{self.direction})"
+        )
 
     def __hash__(self) -> int:
         return hash((self.row, self.col))
@@ -105,7 +119,7 @@ class Coordinate:
 
 class Graph:
     def __init__(self):
-        self.graph : dict[Coordinate, dict[Coordinate, int]] = {}
+        self.graph: dict[Coordinate, dict[Coordinate, int]] = {}
         self.start_coordinate: Coordinate
         self.end_coordinate: Coordinate
         self.best_tiles: set = set()
@@ -150,7 +164,9 @@ class Graph:
                 continue
             visited_nodes.add(node)
             for neighbor_node, _ in self.graph[node].items():
-                distance, neighbor_direction = node.get_score_to_neighbor(neighbor=neighbor_node)
+                distance, neighbor_direction = node.get_score_to_neighbor(
+                    neighbor=neighbor_node
+                )
                 neighbor_node.direction = neighbor_direction
                 tentative_distance = current_distance + distance
                 if neighbor_node.value == "E":
@@ -179,7 +195,9 @@ def part01(graph: Graph):
     distances = graph.shortest_path()
     # pprint(distances)
     pprint(graph.best_tiles)
-    print(f"Shortest Distance to E{graph.end_coordinate}: {distances[graph.end_coordinate]}")
+    print(
+        f"Shortest Distance to E{graph.end_coordinate}: {distances[graph.end_coordinate]}"
+    )
     print(f"shortest tile count: {len(graph.best_tiles)}")
 
 

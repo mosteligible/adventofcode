@@ -1,6 +1,5 @@
 from heapq import heapify, heappop, heappush
 
-
 SAMPLE = """5,4
 4,2
 4,5
@@ -34,7 +33,9 @@ class Coordinate:
         self.col = col
         self.value = value
 
-    def next_nodes(self, r_limit: int, c_limit: int, grid: list[list[str]]) -> list["Coordinate"]:
+    def next_nodes(
+        self, r_limit: int, c_limit: int, grid: list[list[str]]
+    ) -> list["Coordinate"]:
         retval = []
         # north
         if self.row - 1 >= 0:
@@ -70,7 +71,7 @@ class Coordinate:
 
 class Graph:
     def __init__(self):
-        self.graph : dict[Coordinate, dict[Coordinate, int]] = {}
+        self.graph: dict[Coordinate, dict[Coordinate, int]] = {}
         self.start_coordinate: Coordinate
         self.end_coordinate: Coordinate
         self.best_tiles: set = set()
@@ -80,12 +81,12 @@ class Graph:
             self.graph[n1] = {}
         self.graph[n1][n2] = weight
 
-    def from_aoc_input(self, grid: list[list[Coordinate]]) -> None:
+    def from_aoc_input(self, grid: list[list[Coordinate]]) -> "Graph":
         self.graph = {}
         row_limit = len(grid)
         col_limit = len(grid[0])
-        for row in (grid):
-            for col in (row):
+        for row in grid:
+            for col in row:
                 n1 = col
                 if n1.value == "#":
                     continue
@@ -125,10 +126,10 @@ class Graph:
 
 
 def show_grid(grid: list[list[Coordinate]]) -> None:
-    print('-'*60)
+    print("-" * 60)
     for row in grid:
         print("".join([i.value for i in row]))
-    print('-'*60)
+    print("-" * 60)
 
 
 def get_grid(size: int) -> list[list[Coordinate]]:

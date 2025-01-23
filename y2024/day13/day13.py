@@ -1,7 +1,6 @@
 import re
 from dataclasses import dataclass
 
-
 SAMPLE = """Button A: X+94, Y+34
 Button B: X+22, Y+67
 Prize: X=8400, Y=5400
@@ -110,27 +109,30 @@ def part02(data: list[ArcadeMachine]):
 
 
 def other():
-    with open('./day13/input.txt') as f:
-        scenarios = f.read().split('\n\n')
+    with open("./day13/input.txt") as f:
+        scenarios = f.read().split("\n\n")
 
     def parse(scenario):
         output = {}
-        a,b,prize = scenario.splitlines()
-        output['A'] = [int(item.split('+')[1]) for item in a.split(':')[1].split(', ')]
-        output['B'] = [int(item.split('+')[1]) for item in b.split(':')[1].split(', ')]
-        output['Prize'] = [10000000000000+int(item.split('=')[1]) for item in prize.split(':')[1].split(', ')]
+        a, b, prize = scenario.splitlines()
+        output["A"] = [int(item.split("+")[1]) for item in a.split(":")[1].split(", ")]
+        output["B"] = [int(item.split("+")[1]) for item in b.split(":")[1].split(", ")]
+        output["Prize"] = [
+            10000000000000 + int(item.split("=")[1])
+            for item in prize.split(":")[1].split(", ")
+        ]
         return output
 
     scenarios = [parse(scenario) for scenario in scenarios]
 
     def solve(scenario):
-        ax,ay = scenario['A']
-        bx,by = scenario['B']
-        tx,ty = scenario['Prize']
-        b = (tx*ay-ty*ax)//(ay*bx-by*ax)
-        a = (tx*by-ty*bx)//(by*ax-bx*ay)
-        if ax*a+bx*b==tx and ay*a+by*b==ty:
-            return 3*a+b
+        ax, ay = scenario["A"]
+        bx, by = scenario["B"]
+        tx, ty = scenario["Prize"]
+        b = (tx * ay - ty * ax) // (ay * bx - by * ax)
+        a = (tx * by - ty * bx) // (by * ax - bx * ay)
+        if ax * a + bx * b == tx and ay * a + by * b == ty:
+            return 3 * a + b
         else:
             return 0
 

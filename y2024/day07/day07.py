@@ -1,6 +1,5 @@
 from pprint import pprint
 
-
 SAMPLE = """190: 10 19
 3267: 81 40 27
 83: 17 5
@@ -34,13 +33,13 @@ def ten_power(num: int) -> int:
 
 def operate(nums: list[int], curr_index: int, res: int, target: int) -> bool:
     """
-        77, 77, 16, 765, 9
+          77, 77, 16, 765, 9
 
-            77
-         /+     \*
-       77         77
-    /+     \*   /+   \*
-  16        16 16      16
+              77
+           /+     \*
+         77         77
+      /+     \*   /+   \*
+    16        16 16      16
 
     """
     # print(f"\n{nums=}, {curr_index=}, {res=}, {target=}", end = " ")
@@ -51,26 +50,26 @@ def operate(nums: list[int], curr_index: int, res: int, target: int) -> bool:
 
     sum_res = nums[curr_index] + res
     # print("sum", end = " ")
-    sum_ok = operate(nums, curr_index+1, res=sum_res, target=target)
+    sum_ok = operate(nums, curr_index + 1, res=sum_res, target=target)
     # print(f"{sum_ok=}")
     if sum_ok:
         return True
     prod_res = nums[curr_index] * res
     # print("product", end=" ")
-    prod_ok = operate(nums, curr_index+1, res=prod_res, target=target)
+    prod_ok = operate(nums, curr_index + 1, res=prod_res, target=target)
     # print(f"{prod_ok=}")
     return prod_ok
 
 
 def operate_extra(nums: list[int], curr_index: int, res: int, target: int) -> bool:
     """
-        77, 77, 16, 765, 9
+          77, 77, 16, 765, 9
 
-            77
-         /+     \*
-       77         77
-    /+     \*   /+   \*
-  16        16 16      16
+              77
+           /+     \*
+         77         77
+      /+     \*   /+   \*
+    16        16 16      16
 
     """
     # print(f"\n{nums=}, {curr_index=}, {res=}, {target=}", end = " ")
@@ -81,18 +80,20 @@ def operate_extra(nums: list[int], curr_index: int, res: int, target: int) -> bo
 
     sum_res = nums[curr_index] + res
     # print("sum", end = " ")
-    sum_ok = operate_extra(nums, curr_index+1, res=sum_res, target=target)
+    sum_ok = operate_extra(nums, curr_index + 1, res=sum_res, target=target)
     # print(f"{sum_ok=}")
     if sum_ok:
         return True
     pow_10 = ten_power(nums[curr_index])
     concatenate_res = res * pow_10 + nums[curr_index]
-    concatenate_ok = operate_extra(nums, curr_index+1, res=concatenate_res, target=target)
+    concatenate_ok = operate_extra(
+        nums, curr_index + 1, res=concatenate_res, target=target
+    )
     if concatenate_ok:
         return True
     prod_res = nums[curr_index] * res
     # print("product", end=" ")
-    prod_ok = operate_extra(nums, curr_index+1, res=prod_res, target=target)
+    prod_ok = operate_extra(nums, curr_index + 1, res=prod_res, target=target)
     # print(f"{prod_ok=}")
     if prod_ok:
         return True
@@ -137,4 +138,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

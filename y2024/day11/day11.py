@@ -1,7 +1,6 @@
 import math
 from copy import deepcopy
 
-
 INPUT = "17639 47 3858 0 470624 9467423 5 188"
 
 
@@ -9,7 +8,7 @@ def process_input():
     with open("./day11/input.txt", "r") as fp:
         content = fp.read()
     content = content.strip()
-    content = {int(i):1 for i in content.split()}
+    content = {int(i): 1 for i in content.split()}
     if content.get(1) is None:
         content[1] = 0
     if content.get(0) is None:
@@ -18,7 +17,7 @@ def process_input():
 
 
 def get_num_digits(n: int) -> int:
-    return math.floor(math.log10(n)+ 1)
+    return math.floor(math.log10(n) + 1)
 
 
 def part01(data: dict[int, int], num_blinks: int):
@@ -30,7 +29,7 @@ def part01(data: dict[int, int], num_blinks: int):
                 if new_rocks.get(1) is None:
                     new_rocks[1] = 0
                 new_rocks[1] += count
-            elif get_num_digits(stone)%2==0:
+            elif get_num_digits(stone) % 2 == 0:
                 num_digits = get_num_digits(stone)
                 ten_pow = num_digits // 2
                 left = stone // 10**ten_pow
@@ -42,8 +41,8 @@ def part01(data: dict[int, int], num_blinks: int):
                 new_rocks[left] += count
                 new_rocks[right] += count
             else:
-                if new_rocks.get(stone*2024) is None:
-                    new_rocks[stone*2024] = 0
+                if new_rocks.get(stone * 2024) is None:
+                    new_rocks[stone * 2024] = 0
                 new_rocks[stone * 2024] += count
         rocks = new_rocks
         print(f"blinking: {i} - num_rocks = {sum(rocks.values())}")
@@ -58,4 +57,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
